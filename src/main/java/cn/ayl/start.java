@@ -17,11 +17,25 @@ public class start {
     //txt文件编码
     public final static String ENCODING = "UTF-8";
 
+    //小说目录
+    public final static String DIRECTORY = "/work/My-Books/仙路浮萍/少年卷/";
+
     public static void main(String argv[]) {
-        String filePath = "/work/My-Books/仙路浮萍/少年卷/第一章·纤户之子.txt";
-        List<String> list = readTxtFile(filePath);
-        for (String text : list) {
-            System.out.println(text);
+        getFile(DIRECTORY);
+    }
+
+    private static void getFile(String path) {
+        File file = new File(path);
+        File[] array = file.listFiles();
+
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].isFile()) {
+                System.out.println("******************");
+                System.out.println(array[i].getName());
+                System.out.println(array[i]);
+            } else if (array[i].isDirectory()) {
+                getFile(array[i].getPath());
+            }
         }
     }
 
