@@ -2,10 +2,7 @@ package cn.ayl;
 
 import cn.ayl.util.NumberUtil;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,19 +32,45 @@ public class start {
     //用来存放小说章节(Key)和路径(value)的信息 eg:    <1,"/work/My-Books/仙路浮萍/少年卷/第一章·序幕.txt">
     public static HashMap<Integer, String> novelInfo = new HashMap<>();
 
-    public static void main(String argv[]) {
+    public static void main(String argv[]) throws IOException {
         //准备要生成的文件
         File newNovel = new File(Directory + NewNovel);
+        //创建
+        newNovel.createNewFile();
+        //文件写入
+        FileWriter fileWriter = new FileWriter(newNovel);
+        //缓存
+        BufferedWriter writer = new BufferedWriter(fileWriter);
         //todo 添加前言(作者+简介)
         //获取目录下所有小说单章的路径
         getFile(Directory);
         //遍历info中的key(不需要排序,组装的过程中已经自动排序了)
         novelInfo.keySet().forEach(key -> {
             //获取对应文件的文本
-            List<String> content = readTxtFile(novelInfo.get(key));
-            //todo 组装至文件
+            List<String> contents = readTxtFile(novelInfo.get(key));
+            //组装至文件
+            for (String content : contents) {
+                try {
+                    //写入
+                    writer.append(content);
+                    //每章的每一行换行
+                    writer.write("\r\n");
+                } catch (IOException e) {
+                    System.out.println("写入失败.");
+                }
+            }
+            //每一章额外换几行
+            try {
+                writer.write("\r\n");
+                writer.write("\r\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
+        //缓存写入文件
+        writer.flush();
     }
+
 
     /**
      * 获取目录下的所有小说并组装成Map
