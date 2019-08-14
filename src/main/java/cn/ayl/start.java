@@ -25,7 +25,7 @@ public class start {
     //小说目录
     public final static String Directory = "/work/My-Books/仙路浮萍/少年卷/";
     //要生成的全章节文件名
-    public final static String NewNovel = "仙路浮萍完整版";
+    public final static String NewNovel = "仙路浮萍完整版.txt";
     //用来判断小说章节的左右字符  eg:   第一章·序幕
     public final static String LeftString = "第";
     public final static String RightString = "章·";
@@ -41,7 +41,16 @@ public class start {
         FileWriter fileWriter = new FileWriter(newNovel);
         //缓存
         BufferedWriter writer = new BufferedWriter(fileWriter);
-        //todo 添加前言(作者+简介)
+        //添加前言(作者+简介)
+        writer.append("作者:");
+        writer.append("  " + Author);
+        writer.write("\r\n");
+        writer.write("\r\n");
+        writer.append("内容简介:");
+        writer.append("  " + ExtraInfo);
+        writer.write("\r\n");
+        writer.write("\r\n");
+        writer.write("\r\n");
         //获取目录下所有小说单章的路径
         getFile(Directory);
         //遍历info中的key(不需要排序,组装的过程中已经自动排序了)
@@ -61,7 +70,6 @@ public class start {
             }
             //每一章额外换几行
             try {
-                writer.write("\r\n");
                 writer.write("\r\n");
             } catch (IOException e) {
                 e.printStackTrace();
