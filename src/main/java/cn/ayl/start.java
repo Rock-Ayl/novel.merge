@@ -17,18 +17,24 @@ import java.util.List;
  */
 public class start {
 
+    //作者
+    public final static String Author = "黄枫谷小辈";
+    //内容简介
+    public final static String ExtraInfo = "内容简介";
     //txt文件编码
     public final static String ENCODING = "UTF-8";
-
     //小说目录
     public final static String DIRECTORY = "/work/My-Books/仙路浮萍/少年卷/";
-
-    //用来存放小说的信息 eg:    <1,"/work/My-Books/仙路浮萍/少年卷/第一章·纤户之子.txt">
+    //用来判断小说章节的左右字符
+    public final static String LeftString = "第";
+    public final static String RightString = "章·";
+    //用来存放小说章节(Key)和路径(value)的信息 eg:    <1,"/work/My-Books/仙路浮萍/少年卷/第一章·纤户之子.txt">
     public static HashMap<Integer, String> novelInfo = new HashMap<>();
 
     public static void main(String argv[]) {
         //获取目录下所有小说单章的路径
         getFile(DIRECTORY);
+        System.out.println(novelInfo);
     }
 
     /**
@@ -46,9 +52,9 @@ public class start {
                 //获取单章的路径
                 String chapterUrl = array[i].toString();
                 //简单的判断是否为单章名 (判断是否存在 "章·" 字段)
-                if (chapterName.indexOf("章·") != -1) {
+                if (chapterName.indexOf(RightString) != -1) {
                     //切出大写数字
-                    chapterName = chapterName.substring(chapterName.indexOf("第"), chapterName.indexOf("章·")).substring("第".length());
+                    chapterName = chapterName.substring(chapterName.indexOf(LeftString), chapterName.indexOf(RightString)).substring(LeftString.length());
                     //转化为阿拉伯数字并成为key
                     novelInfo.put(NumberUtil.getNumberByChina(chapterName), chapterUrl);
                 }
