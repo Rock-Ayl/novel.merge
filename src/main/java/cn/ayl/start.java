@@ -1,10 +1,13 @@
 package cn.ayl;
 
+import cn.ayl.util.NumberUtil;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,19 +23,35 @@ public class start {
     //小说目录
     public final static String DIRECTORY = "/work/My-Books/仙路浮萍/少年卷/";
 
+    //用来存放小说的信息 eg:    <1,"/work/My-Books/仙路浮萍/少年卷/第一章·纤户之子.txt">
+    public static HashMap<Integer, String> novelInfo = new HashMap<>();
+
     public static void main(String argv[]) {
+        //获取目录下所有小说单章的路径
         getFile(DIRECTORY);
     }
 
+    /**
+     * 获取目录下的所有小说并组装成Map
+     *
+     * @param path
+     */
     private static void getFile(String path) {
         File file = new File(path);
         File[] array = file.listFiles();
-
         for (int i = 0; i < array.length; i++) {
             if (array[i].isFile()) {
-                System.out.println("******************");
-                System.out.println(array[i].getName());
-                System.out.println(array[i]);
+                //获取单章的名字
+                String chapterName = array[i].getName();
+                //获取单章的路径
+                String chapterUrl = array[i].toString();
+                //简单的判断是否为单章名 (判断是否存在 "章·" 字段)
+                if (chapterName.indexOf("章·") != -1) {
+                    //切出大写数字
+                    chapterName = chapterName.substring(chapterName.indexOf("第"), chapterName.indexOf("章·")).substring("第".length());
+                    //转化为阿拉伯数字并成为key
+                    novelInfo.put(NumberUtil.getNumberByChina(chapterName), chapterUrl);
+                }
             } else if (array[i].isDirectory()) {
                 getFile(array[i].getPath());
             }
