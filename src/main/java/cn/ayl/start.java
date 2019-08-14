@@ -38,12 +38,14 @@ public class start {
     public static void main(String argv[]) {
         //准备要生成的文件
         File newNovel = new File(Directory + NewNovel);
+        //todo 添加前言(作者+简介)
         //获取目录下所有小说单章的路径
         getFile(Directory);
         //遍历info中的key(不需要排序,组装的过程中已经自动排序了)
         novelInfo.keySet().forEach(key -> {
             //获取对应文件的文本
             List<String> content = readTxtFile(novelInfo.get(key));
+            //todo 组装至文件
         });
     }
 
@@ -87,8 +89,9 @@ public class start {
             File file = new File(filePath);
             //如果文件存在
             if (file.exists()) {
-                //获取文件流
+                //获取文件字节并解码成字符
                 InputStreamReader stream = new InputStreamReader(new FileInputStream(file), Encoding);
+                //缓冲
                 BufferedReader buffer = new BufferedReader(stream);
                 //读取并组装
                 String lineTxt;
