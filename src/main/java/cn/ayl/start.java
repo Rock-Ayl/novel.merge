@@ -21,12 +21,14 @@ public class start {
     public final static String Author = "黄枫谷小辈";
     //内容简介
     public final static String ExtraInfo = "内容简介";
+    //是否自动添加章节名(如果每一章小说最上面有的话就选 false ,如果没有就选 true)
+    public final static boolean AddChapterName = false;
     //txt文件编码
     public final static String Encoding = "UTF-8";
     //小说目录
     public final static String Directory = "/work/My-Books/仙路浮萍/少年卷/";
     //要生成的全章节文件名
-    public final static String newNovel = "/work/My-Books/仙路浮萍/少年卷/";
+    public final static String NewNovel = "仙路浮萍完整版";
     //用来判断小说章节的左右字符  eg:   第一章·序幕
     public final static String LeftString = "第";
     public final static String RightString = "章·";
@@ -34,9 +36,15 @@ public class start {
     public static HashMap<Integer, String> novelInfo = new HashMap<>();
 
     public static void main(String argv[]) {
+        //准备要生成的文件
+        File newNovel = new File(Directory + NewNovel);
         //获取目录下所有小说单章的路径
         getFile(Directory);
-        System.out.println(novelInfo);
+        //遍历info中的key(不需要排序,组装的过程中已经自动排序了)
+        novelInfo.keySet().forEach(key -> {
+            //获取对应文件的文本
+            List<String> content = readTxtFile(novelInfo.get(key));
+        });
     }
 
     /**
