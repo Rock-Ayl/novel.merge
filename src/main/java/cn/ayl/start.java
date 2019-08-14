@@ -28,7 +28,8 @@ public class start {
     //txt文件编码
     public final static String Encoding = "UTF-8";
     //小说目录
-    public final static String Directory = "/work/My-Books/仙路浮萍/少年卷/";
+    public final static String Directory = FilenameUtils.normalize("D:\\小黑屋\\My Books\\仙路浮萍\\少年卷\\");
+    //public final static String Directory = "/work/My-Books/仙路浮萍/少年卷/";
     //要生成的全章节文件名
     public final static String NewNovel = "仙路浮萍完整版.txt";
     //用来判断小说章节的左右字符  eg:   第一章·序幕
@@ -76,6 +77,7 @@ public class start {
                 if (i == 0) {
                     try {
                         writer.append(LeftString + key + RightString + novelName.get(key));
+                        writer.write("\r\n");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
