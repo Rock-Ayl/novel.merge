@@ -22,9 +22,11 @@ public class start {
     //内容简介
     public final static String ExtraInfo = "内容简介";
     //txt文件编码
-    public final static String ENCODING = "UTF-8";
+    public final static String Encoding = "UTF-8";
     //小说目录
-    public final static String DIRECTORY = "/work/My-Books/仙路浮萍/少年卷/";
+    public final static String Directory = "/work/My-Books/仙路浮萍/少年卷/";
+    //要生成的全章节文件名
+    public final static String newNovel = "/work/My-Books/仙路浮萍/少年卷/";
     //用来判断小说章节的左右字符  eg:   第一章·序幕
     public final static String LeftString = "第";
     public final static String RightString = "章·";
@@ -33,7 +35,7 @@ public class start {
 
     public static void main(String argv[]) {
         //获取目录下所有小说单章的路径
-        getFile(DIRECTORY);
+        getFile(Directory);
         System.out.println(novelInfo);
     }
 
@@ -78,7 +80,7 @@ public class start {
             //如果文件存在
             if (file.exists()) {
                 //获取文件流
-                InputStreamReader stream = new InputStreamReader(new FileInputStream(file), ENCODING);
+                InputStreamReader stream = new InputStreamReader(new FileInputStream(file), Encoding);
                 BufferedReader buffer = new BufferedReader(stream);
                 //读取并组装
                 String lineTxt;
