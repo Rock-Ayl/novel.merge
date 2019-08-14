@@ -34,6 +34,8 @@ public class start {
     //用来判断小说章节的左右字符  eg:   第一章·序幕
     public final static String LeftString = "第";
     public final static String RightString = "章·";
+    //取章名的调优值
+    public final static int compatibleName = 2;
     //用来存放小说章节(Key)和路径(value)的信息 eg:    <1,"/work/My-Books/仙路浮萍/少年卷/第一章·序幕.txt">
     public static HashMap<Integer, String> novelInfo = new HashMap<>();
     public static HashMap<Integer, String> novelName = new HashMap<>();
@@ -124,7 +126,8 @@ public class start {
                     novelInfo.put(NumberUtil.getNumberByChina(chapterName), chapterUrl);
                     //获取书名并组装
                     String fileName = FilenameUtils.getBaseName(array[i].getName());
-                    String name = fileName.substring(fileName.indexOf(RightString) + 2);
+                    //切出书名
+                    String name = fileName.substring(fileName.indexOf(RightString) + compatibleName);
                     novelName.put(NumberUtil.getNumberByChina(chapterName), name);
                 }
             } else if (array[i].isDirectory()) {
