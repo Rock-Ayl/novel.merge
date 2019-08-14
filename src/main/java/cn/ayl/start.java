@@ -1,6 +1,7 @@
 package cn.ayl;
 
 import cn.ayl.util.NumberUtil;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,12 +15,16 @@ import java.util.List;
  */
 public class start {
 
+    //小说名
+    public final static String novel = "仙路浮萍";
     //作者
     public final static String Author = "黄枫谷小辈";
     //内容简介
-    public final static String ExtraInfo = "内容简介";
-    //是否自动添加章节名(如果每一章小说最上面有的话就选 false ,如果没有就选 true)
+    public final static String ExtraInfo = "内容简介.............";
+    //是否自动添加章节名(如果每一章小说第一行已有章名的话就选 false ,如果没有就选 true)
     public final static boolean AddChapterName = false;
+    //章节名是否需要从大写转阿拉伯(eg: 第1章 选 false 第一章 选 true)
+    public final static boolean SwitchNumber = true;
     //txt文件编码
     public final static String Encoding = "UTF-8";
     //小说目录
@@ -31,6 +36,7 @@ public class start {
     public final static String RightString = "章·";
     //用来存放小说章节(Key)和路径(value)的信息 eg:    <1,"/work/My-Books/仙路浮萍/少年卷/第一章·序幕.txt">
     public static HashMap<Integer, String> novelInfo = new HashMap<>();
+    public static HashMap<Integer, String> novelName = new HashMap<>();
 
     public static void main(String argv[]) throws IOException {
         //准备要生成的文件
@@ -42,6 +48,10 @@ public class start {
         //缓存
         BufferedWriter writer = new BufferedWriter(fileWriter);
         //添加前言(作者+简介)
+        writer.append("书名:");
+        writer.append("  " + novel);
+        writer.write("\r\n");
+        writer.write("\r\n");
         writer.append("作者:");
         writer.append("  " + Author);
         writer.write("\r\n");
@@ -57,19 +67,31 @@ public class start {
         novelInfo.keySet().forEach(key -> {
             //获取对应文件的文本
             List<String> contents = readTxtFile(novelInfo.get(key));
+
             //组装至文件
-            for (String content : contents) {
-                try {
-                    //写入
-                    writer.append(content);
-                    //每章的每一行换行
-                    writer.write("\r\n");
-                } catch (IOException e) {
-                    System.out.println("写入失败.");
+            for (int i = 0; i < contents.size(); i++) {
+                //添加标题
+                if (i == 0) {
+                    try {
+                        writer.append(LeftString + key + RightString + novelName.get(key));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        //写入
+                        writer.append(contents.get(i));
+                        //每章的每一行换行
+                        writer.write("\r\n");
+                    } catch (IOException e) {
+                        System.out.println("写入失败.");
+                    }
                 }
             }
             //每一章额外换几行
             try {
+                writer.write("\r\n");
+                writer.write("\r\n");
                 writer.write("\r\n");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -98,8 +120,12 @@ public class start {
                 if (chapterName.indexOf(RightString) != -1) {
                     //切出大写数字
                     chapterName = chapterName.substring(chapterName.indexOf(LeftString), chapterName.indexOf(RightString)).substring(LeftString.length());
-                    //转化为阿拉伯数字并成为key
+                    //转化为阿拉伯数字并成为key,同时组装完整路径和章节名
                     novelInfo.put(NumberUtil.getNumberByChina(chapterName), chapterUrl);
+                    //获取书名并组装
+                    String fileName = FilenameUtils.getBaseName(array[i].getName());
+                    String name = fileName.substring(fileName.indexOf(RightString) + 2);
+                    novelName.put(NumberUtil.getNumberByChina(chapterName), name);
                 }
             } else if (array[i].isDirectory()) {
                 getFile(array[i].getPath());
