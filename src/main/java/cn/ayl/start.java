@@ -31,7 +31,7 @@ public class start {
     public final static String Directory = FilenameUtils.normalize("D:\\小黑屋\\My Books\\仙路浮萍\\少年卷\\");
     //public final static String Directory = "/work/My-Books/仙路浮萍/少年卷/";
     //要生成的全章节文件名
-    public final static String NewNovel = "仙路浮萍完整版.txt";
+    public final static String NewNovel = "仙路浮萍完整版1.02.txt";
     //用来判断小说章节的左右字符  eg:   第一章·序幕
     public final static String LeftString = "第";
     public final static String RightString = "章·";
