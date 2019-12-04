@@ -21,6 +21,8 @@ public class start {
     //要生成的全章节文件名
     public final static String NewNovel = "仙路浮萍完整版1.20.txt";
 
+    //小说总字数
+    public static int allAmount = 0;
     //小说名
     public final static String novel = "仙路浮萍";
     //作者
@@ -67,13 +69,18 @@ public class start {
         writer.write("\r\n");
         //获取目录下所有小说单章的路径
         getFile(Directory);
+
         //遍历info中的key(不需要排序,组装的过程中已经自动排序了)
         novelInfo.keySet().forEach(key -> {
             //获取对应文件的文本
             List<String> contents = readTxtFile(novelInfo.get(key));
 
+            //获取当前文本数量
+            int thisAmount = getChineseCharacters(contents);
             //输出本章数量
-            System.out.println("第" + key + "章字数:" + getChineseCharacters(contents));
+            System.out.println("第" + key + "章字数:" + thisAmount);
+            //累加
+            allAmount = allAmount + thisAmount;
 
             //组装至文件
             for (int i = 0; i < contents.size(); i++) {
@@ -107,6 +114,8 @@ public class start {
         });
         //缓存写入文件
         writer.flush();
+        //输出总文字
+        System.out.println("总汉字数:" + allAmount);
     }
 
 
