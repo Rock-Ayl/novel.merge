@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * create by Rock-Ayl 2019-8-13
@@ -14,6 +15,11 @@ import java.util.List;
  * 主程序
  */
 public class start {
+
+    //小说目录
+    public final static String Directory = FilenameUtils.normalize("/Users/ayl/work/My-Books/仙路浮萍/少年卷/");
+    //要生成的全章节文件名
+    public final static String NewNovel = "仙路浮萍完整版1.20.txt";
 
     //小说名
     public final static String novel = "仙路浮萍";
@@ -27,11 +33,6 @@ public class start {
     public final static boolean SwitchNumber = true;
     //txt文件编码
     public final static String Encoding = "UTF-8";
-    //小说目录
-    public final static String Directory = FilenameUtils.normalize("D:\\小黑屋\\My Books\\仙路浮萍\\少年卷\\");
-    //public final static String Directory = "/work/My-Books/仙路浮萍/少年卷/";
-    //要生成的全章节文件名
-    public final static String NewNovel = "仙路浮萍完整版1.02.txt";
     //用来判断小说章节的左右字符  eg:   第一章·序幕
     public final static String LeftString = "第";
     public final static String RightString = "章·";
@@ -70,6 +71,9 @@ public class start {
         novelInfo.keySet().forEach(key -> {
             //获取对应文件的文本
             List<String> contents = readTxtFile(novelInfo.get(key));
+
+            //输出本章数量
+            System.out.println("第" + key + "章字数:" + getChineseCharacters(contents));
 
             //组装至文件
             for (int i = 0; i < contents.size(); i++) {
@@ -169,6 +173,28 @@ public class start {
             System.out.println("读写出现错误");
         }
         return textList;
+    }
+
+    /**
+     * 获得一组文件汉字数量
+     *
+     * @param contents
+     * @return
+     */
+    public static int getChineseCharacters(List<String> contents) {
+        int amount = 0;
+        if (contents != null && contents.size() > 0) {
+            for (String content : contents) {
+                for (int i = 0; i < content.length(); i++) {
+                    String regex = "^[\u4E00-\u9FA5]{0,}$";
+                    boolean matches = Pattern.matches(regex, content.charAt(i) + "");
+                    if (matches) {
+                        amount++;
+                    }
+                }
+            }
+        }
+        return amount;
     }
 
 }
