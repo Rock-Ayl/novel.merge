@@ -19,7 +19,7 @@ public class start {
     //小说目录
     public final static String Directory = FilenameUtils.normalize("/Users/ayl/work/My-Books/仙路浮萍/少年卷/");
     //要生成的全章节文件名
-    public final static String NewNovel = "仙路浮萍完整版1.20.txt";
+    public final static String NewNovel = "/Users/ayl/书籍/仙路浮萍完整版1.20.txt";
 
     //小说总字数
     public static int allAmount = 0;
@@ -46,7 +46,7 @@ public class start {
 
     public static void main(String argv[]) throws IOException {
         //准备要生成的文件
-        File newNovel = new File(Directory + NewNovel);
+        File newNovel = new File(NewNovel);
         //创建
         newNovel.createNewFile();
         //文件写入
