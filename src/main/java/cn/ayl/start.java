@@ -16,15 +16,15 @@ import java.util.regex.Pattern;
  */
 public class start {
 
+    //小说名
+    public final static String novel = "仙路浮萍";
     //小说目录
     public final static String Directory = FilenameUtils.normalize("/Users/ayl/work/My-Books/仙路浮萍/少年卷/");
     //要生成的全章节文件名
-    public final static String NewNovel = "/Users/ayl/书籍/仙路浮萍完整版1.20.txt";
+    public final static String NewNovel = "/Users/ayl/书籍/" + novel + ".txt";
 
     //小说总字数
     public static int allAmount = 0;
-    //小说名
-    public final static String novel = "仙路浮萍";
     //作者
     public final static String Author = "黄枫谷小辈";
     //内容简介
