@@ -29,15 +29,18 @@ public class start {
     public final static String Author = "黄枫谷小辈";
     //内容简介
     public final static String ExtraInfo = "内容简介.............";
+    //用来判断小说章节的左右字符  eg:   第一章·序幕
+    public final static String LeftString = "第";
+    public final static String RightString = "章·";
+
     //是否自动添加章节名(如果每一章小说第一行已有章名的话就选 false ,如果没有就选 true)
     public final static boolean AddChapterName = false;
     //章节名是否需要从大写转阿拉伯(eg: 第1章 选 false 第一章 选 true)
     public final static boolean SwitchNumber = true;
+
     //txt文件编码
     public final static String Encoding = "UTF-8";
-    //用来判断小说章节的左右字符  eg:   第一章·序幕
-    public final static String LeftString = "第";
-    public final static String RightString = "章·";
+
     //取章名的调优值
     public final static int compatibleName = 2;
     //用来存放小说章节(Key)和路径(value)的信息 eg:    <1,"/work/My-Books/仙路浮萍/少年卷/第一章·序幕.txt">
@@ -45,6 +48,7 @@ public class start {
     public static HashMap<Integer, String> novelName = new HashMap<>();
 
     public static void main(String argv[]) throws IOException {
+
         //准备要生成的文件
         File newNovel = new File(NewNovel);
         //创建
@@ -67,11 +71,13 @@ public class start {
         writer.write("\r\n");
         writer.write("\r\n");
         writer.write("\r\n");
+
         //获取目录下所有小说单章的路径
         getFile(Directory);
 
         //遍历info中的key(不需要排序,组装的过程中已经自动排序了)
         novelInfo.keySet().forEach(key -> {
+
             //获取对应文件的文本
             List<String> contents = readTxtFile(novelInfo.get(key));
 
@@ -137,13 +143,30 @@ public class start {
                 if (chapterName.indexOf(RightString) != -1) {
                     //切出大写数字
                     chapterName = chapterName.substring(chapterName.indexOf(LeftString), chapterName.indexOf(RightString)).substring(LeftString.length());
-                    //转化为阿拉伯数字并成为key,同时组装完整路径和章节名
-                    novelInfo.put(NumberUtil.getNumberByChina(chapterName), chapterUrl);
+
+                    int key;
+                    int keyName;
+                    try {
+                        //判断是否为数字
+                        key = Integer.parseInt(chapterName);
+                        keyName = Integer.parseInt(chapterName);
+                    } catch (Exception e) {
+                        //转化为阿拉伯数字
+                        key = NumberUtil.getNumberByChina(chapterName);
+                        keyName = NumberUtil.getNumberByChina(chapterName);
+                    }
+
+                    //同时组装完整路径和章节名
+                    novelInfo.put(key, chapterUrl);
+
                     //获取书名并组装
                     String fileName = FilenameUtils.getBaseName(array[i].getName());
+
                     //切出书名
                     String name = fileName.substring(fileName.indexOf(RightString) + compatibleName);
-                    novelName.put(NumberUtil.getNumberByChina(chapterName), name);
+
+                    //组装
+                    novelName.put(keyName, name);
                 }
             } else if (array[i].isDirectory()) {
                 getFile(array[i].getPath());
