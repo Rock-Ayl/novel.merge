@@ -19,9 +19,11 @@ public class start {
     //小说名
     public final static String novel = "仙路浮萍";
     //小说目录
-    public final static String Directory = FilenameUtils.normalize("/Users/ayl/work/My-Books/仙路浮萍/少年卷/");
+    public final static String Directory = "/Users/ayl/work/My-Books/仙路浮萍/";
+    //小说分卷
+    public final static String[] volumeArr = new String[]{"少年卷", "练气卷"};
     //要生成的全章节文件名
-    public final static String NewNovel = "/Users/ayl/书籍/" + novel + ".txt";
+    public final static String NewNovel = "/Users/ayl/书/" + novel + ".txt";
 
     //小说总字数
     public static int allAmount = 0;
@@ -72,8 +74,14 @@ public class start {
         writer.write("\r\n");
         writer.write("\r\n");
 
-        //获取目录下所有小说单章的路径
-        getFile(Directory);
+        //根据分卷组装成对应路径
+        for (String volume : volumeArr) {
+            //分卷路径
+            String path = FilenameUtils.normalize(Directory + volume + "/");
+            //获取该分卷目录下所有小说单章的路径
+            getFile(path);
+        }
+
 
         //遍历info中的key(不需要排序,组装的过程中已经自动排序了)
         novelInfo.keySet().forEach(key -> {
