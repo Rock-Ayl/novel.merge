@@ -10,7 +10,7 @@ import java.util.TreeMap;
  * 十一 → 11
  * 三十二 → 32
  */
-public class NumberUtil {
+public class NumberUtils {
 
     //阿拉伯组
     static int[] ArabicNumbers = {1, 2, 3, 4, 5, 6, 7, 8, 9};

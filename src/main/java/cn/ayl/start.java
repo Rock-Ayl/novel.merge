@@ -1,6 +1,6 @@
 package cn.ayl;
 
-import cn.ayl.util.NumberUtil;
+import cn.ayl.util.NumberUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
@@ -160,8 +160,8 @@ public class start {
                         keyName = Integer.parseInt(chapterName);
                     } catch (Exception e) {
                         //转化为阿拉伯数字
-                        key = NumberUtil.getNumberByChina(chapterName);
-                        keyName = NumberUtil.getNumberByChina(chapterName);
+                        key = NumberUtils.getNumberByChina(chapterName);
+                        keyName = NumberUtils.getNumberByChina(chapterName);
                     }
 
                     //同时组装完整路径和章节名
