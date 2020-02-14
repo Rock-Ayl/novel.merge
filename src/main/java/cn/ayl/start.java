@@ -21,7 +21,7 @@ public class start {
     //小说目录
     public final static String Directory = "/Users/ayl/work/My-Books/仙路浮萍/";
     //小说分卷
-    public final static String[] volumeArr = new String[]{"少年卷", "练气卷"};
+    public final static String[] volumeArr = new String[]{"懵懂卷","少年卷"};
     //要生成的全章节文件名
     public final static String NewNovel = "/Users/ayl/书/" + novel + ".txt";
 
@@ -141,43 +141,45 @@ public class start {
     private static void getFile(String path) {
         File file = new File(path);
         File[] array = file.listFiles();
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].isFile()) {
-                //获取单章的名字
-                String chapterName = array[i].getName();
-                //获取单章的路径
-                String chapterUrl = array[i].toString();
-                //简单的判断是否为单章名 (eg:判断是否存在 "章·" 字段)
-                if (chapterName.indexOf(RightString) != -1) {
-                    //切出大写数字
-                    chapterName = chapterName.substring(chapterName.indexOf(LeftString), chapterName.indexOf(RightString)).substring(LeftString.length());
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                if (array[i].isFile()) {
+                    //获取单章的名字
+                    String chapterName = array[i].getName();
+                    //获取单章的路径
+                    String chapterUrl = array[i].toString();
+                    //简单的判断是否为单章名 (eg:判断是否存在 "章·" 字段)
+                    if (chapterName.indexOf(RightString) != -1) {
+                        //切出大写数字
+                        chapterName = chapterName.substring(chapterName.indexOf(LeftString), chapterName.indexOf(RightString)).substring(LeftString.length());
 
-                    int key;
-                    int keyName;
-                    try {
-                        //判断是否为数字
-                        key = Integer.parseInt(chapterName);
-                        keyName = Integer.parseInt(chapterName);
-                    } catch (Exception e) {
-                        //转化为阿拉伯数字
-                        key = NumberUtils.getNumberByChina(chapterName);
-                        keyName = NumberUtils.getNumberByChina(chapterName);
+                        int key;
+                        int keyName;
+                        try {
+                            //判断是否为数字
+                            key = Integer.parseInt(chapterName);
+                            keyName = Integer.parseInt(chapterName);
+                        } catch (Exception e) {
+                            //转化为阿拉伯数字
+                            key = NumberUtils.getNumberByChina(chapterName);
+                            keyName = NumberUtils.getNumberByChina(chapterName);
+                        }
+
+                        //同时组装完整路径和章节名
+                        novelInfo.put(key, chapterUrl);
+
+                        //获取书名并组装
+                        String fileName = FilenameUtils.getBaseName(array[i].getName());
+
+                        //切出书名
+                        String name = fileName.substring(fileName.indexOf(RightString) + compatibleName);
+
+                        //组装
+                        novelName.put(keyName, name);
                     }
-
-                    //同时组装完整路径和章节名
-                    novelInfo.put(key, chapterUrl);
-
-                    //获取书名并组装
-                    String fileName = FilenameUtils.getBaseName(array[i].getName());
-
-                    //切出书名
-                    String name = fileName.substring(fileName.indexOf(RightString) + compatibleName);
-
-                    //组装
-                    novelName.put(keyName, name);
+                } else if (array[i].isDirectory()) {
+                    getFile(array[i].getPath());
                 }
-            } else if (array[i].isDirectory()) {
-                getFile(array[i].getPath());
             }
         }
     }
