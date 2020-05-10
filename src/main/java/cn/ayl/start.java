@@ -82,7 +82,6 @@ public class start {
             getFile(path);
         }
 
-
         //遍历info中的key(不需要排序,组装的过程中已经自动排序了)
         novelInfo.keySet().forEach(key -> {
 
@@ -161,8 +160,8 @@ public class start {
                             keyName = Integer.parseInt(chapterName);
                         } catch (Exception e) {
                             //转化为阿拉伯数字
-                            key = NumberUtils.getNumberByChina(chapterName);
-                            keyName = NumberUtils.getNumberByChina(chapterName);
+                            key = NumberUtils.toArabicNumerals(chapterName);
+                            keyName = NumberUtils.toArabicNumerals(chapterName);
                         }
 
                         //同时组装完整路径和章节名

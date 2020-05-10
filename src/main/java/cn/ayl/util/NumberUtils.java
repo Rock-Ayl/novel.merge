@@ -12,22 +12,26 @@ import java.util.TreeMap;
  */
 public class NumberUtils {
 
-    //阿拉伯组
-    static int[] ArabicNumbers = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    //阿拉伯数字组
+    private static int[] ArabicNumbers = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
     //大写数字组
-    static String[] ChinaNumbers = {"一", "二", "三", "四", "五", "六", "七", "八", "九"};
-    static char[] ChinaNumbersByChar = {'一', '二', '三', '四', '五', '六', '七', '八', '九'};
-    static char[] carry = {'千', '百', '十'};
+    private static String[] ChinaNumbers = {"一", "二", "三", "四", "五", "六", "七", "八", "九"};
+    private static char[] ChinaNumbersByChar = {'一', '二', '三', '四', '五', '六', '七', '八', '九'};
+    //单位组
+    private static char[] measuringUnit = {'千', '百', '十'};
 
     //要用的缓存组
-    static Map<String, Integer> a = new TreeMap<>();
-    static Map<Character, Integer> b = new TreeMap<>();
+    private static Map<String, Integer> a = new TreeMap<>();
+    private static Map<Character, Integer> b = new TreeMap<>();
 
     /**
      * 通用方法-大写转阿拉伯数字
-     * eg:输入一个 三十二 返回一个  32
+     *
+     * @param upperCaseNumber 大写数字 eg: 三十二
+     * @return 32
      */
-    public static int getNumberByChina(String str) {
+    public static int toArabicNumerals(String upperCaseNumber) {
         for (int i = 0; i < 9; i++) {
             a.put(ChinaNumbers[i], ArabicNumbers[i]);
             b.put(ChinaNumbersByChar[i], ArabicNumbers[i]);
@@ -35,26 +39,26 @@ public class NumberUtils {
         String yw;
         String ww;
         String qw;
-        if (str.indexOf("亿") != -1) {
-            String[] spy = str.split("亿");
-            if (spy.length == 1) {
-                yw = spy[0];
+        if (upperCaseNumber.indexOf("亿") != -1) {
+            String[] hundredMillion = upperCaseNumber.split("亿");
+            if (hundredMillion.length == 1) {
+                yw = hundredMillion[0];
                 return yw(yw);
             } else {
-                yw = spy[0];
-                String[] spwq = spy[1].split("万");
+                yw = hundredMillion[0];
+                String[] spwq = hundredMillion[1].split("万");
                 if (spwq.length == 1) {
                     ww = spwq[0];
                     return yw(yw) + ww(ww);
                 } else {
-                    yw = spy[0];
+                    yw = hundredMillion[0];
                     ww = spwq[0];
                     qw = spwq[1];
                     return yw(yw) + ww(ww) + qw(qw);
                 }
             }
-        } else if (str.indexOf("万") != -1) {
-            String[] spwq = str.split("万");
+        } else if (upperCaseNumber.indexOf("万") != -1) {
+            String[] spwq = upperCaseNumber.split("万");
             if (spwq.length == 1) {
                 ww = spwq[0];
                 return ww(ww);
@@ -64,35 +68,55 @@ public class NumberUtils {
                 return ww(ww) + qw(qw);
             }
         } else {
-            return qw(str);
+            return qw(upperCaseNumber);
         }
     }
 
-    //计算9999位
-    public static int qw(String str) {
+    /**
+     * 计算9999位
+     *
+     * @param str
+     * @return
+     */
+    private static int qw(String str) {
         return gj(str);
     }
 
-    //计算9999万位
-    public static int ww(String str) {
+    /**
+     * 计算9999万位
+     *
+     * @param str
+     * @return
+     */
+    private static int ww(String str) {
         return gj(str) * 10000;
     }
 
-    //计算24亿(int最大是24亿多)
-    public static int yw(String str) {
+    /**
+     * 计算24亿(int最大是24亿多)
+     *
+     * @param str
+     * @return
+     */
+    private static int yw(String str) {
         return gj(str) * 10000 * 10000;
     }
 
-    //工具方法，用于计算4个位,把亿，万，进行拆分
-    public static int gj(String str) {
+    /**
+     * 用于计算4个位,把亿，万，进行拆分
+     *
+     * @param str
+     * @return
+     */
+    private static int gj(String str) {
         int[] sum = {0, 0, 0, 0};
         int[] sum1 = {0, 0, 0, 0};
         for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == carry[0]) {
+            if (str.charAt(i) == measuringUnit[0]) {
                 sum[0] = b.get(str.charAt(i - 1));
-            } else if (str.charAt(i) == carry[1]) {
+            } else if (str.charAt(i) == measuringUnit[1]) {
                 sum[1] = b.get(str.charAt(i - 1));
-            } else if (str.charAt(i) == carry[2]) {
+            } else if (str.charAt(i) == measuringUnit[2]) {
                 if (str.charAt(0) == '十' || (str.charAt(0) == '零' && b.get(str.charAt(1)) == null)
                         || str.charAt(i - 1) == '零') {
                     sum[2] = 1;
