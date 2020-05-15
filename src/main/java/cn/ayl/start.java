@@ -21,9 +21,9 @@ public class start {
     //小说目录
     public final static String Directory = "/Users/ayl/work/My-Books/仙路浮萍/";
     //小说分卷
-    public final static String[] volumeArr = new String[]{"懵懂卷","少年卷"};
+    public final static String[] volumeArr = new String[]{"懵懂卷", "少年卷"};
     //要生成的全章节文件名
-    public final static String NewNovel = "/Users/ayl/书/" + novel + ".txt";
+    public final static String NewNovel = "/Users/ayl/books/" + novel + ".txt";
 
     //小说总字数
     public static int allAmount = 0;
@@ -53,8 +53,11 @@ public class start {
 
         //准备要生成的文件
         File newNovel = new File(NewNovel);
-        //创建
-        newNovel.createNewFile();
+        //如果不存在,创建
+        if (!newNovel.exists()) {
+            //创建
+            newNovel.createNewFile();
+        }
         //文件写入
         FileWriter fileWriter = new FileWriter(newNovel);
         //缓存
